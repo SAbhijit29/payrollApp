@@ -1,0 +1,117 @@
+<div class="container">
+  <h2 class="mt-4">Employee Salary Slip</h2>
+  <!-- Employee Form -->
+  <form [formGroup]="employeeForm" (ngSubmit)="addEmployee()" class="my-4">
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <input type="text" class="form-control" formControlName="employeeName" placeholder="Employee Name">
+      </div>
+      <div class="form-group col-md-3">
+        <input type="date" class="form-control" formControlName="dateOfBirth" placeholder="Date of Birth">
+      </div>
+      <div class="form-group col-md-2">
+        <select class="form-control" formControlName="gender">
+          <option value="1">Male</option>
+          <option value="2">Female</option>
+          <option value="3" [selected]="3">Select gender...</option>
+        </select>
+      </div>
+      <div class="form-group col-md-2">
+        <input type="text" class="form-control" formControlName="department" placeholder="Department">
+      </div>
+      <div class="form-group col-md-2">
+        <input type="text" class="form-control" formControlName="designation" placeholder="Designation">
+      </div>
+      <div class="form-group col-md-2">
+        <input type="number" class="form-control" formControlName="basicSalary" placeholder="Basic Salary">
+      </div>
+
+    </div>
+    <div class="col-md-2 form-row"> <button type="submit" class="btn btn-primary">Add Employee</button>
+    </div>
+  </form>
+  <div>
+    <button (click)="getEmployees()" class="btn btn-primary">Show All Employee</button>
+  </div>  <br>
+
+  <!-- Employee Table -->
+  <table class="table table-striped" [hidden]="this.employees.length<=0">
+    <thead>
+      <tr>
+        <th>Employee Code</th>
+        <th>Employee Name</th>
+        <th>Date of Birth</th>
+        <th>Gender</th>
+        <th>Department</th>
+        <th>Designation</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let employee of employees">
+        <td>{{ employee.employeeCode }}</td>
+        <td>{{ employee.employeeName }}</td>
+        <td>{{ employee.dateOfBirth | date: 'dd MMM yyyy'}}</td>
+        <td>{{ employee.gender === 1 ? 'Male' : 'Female' }}</td>
+        <td>{{ employee.department }}</td>
+        <td>{{ employee.designation }}</td>
+        <td><button class="btn btn-primary" (click)="showSlip(employee.employeeCode)">Show Payment slip</button></td>
+      </tr>
+      <tr *ngIf="payroll">
+        <td colspan="7">
+          <h3>Payment Slip</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Earnings</th>
+                <th>Deductions</th>
+                <th>Total Salary</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Basic Salary</th>
+                        <th>Dearness Allowance</th>
+                        <th>Conveyance Allowance</th>
+                        <th>House Rent Allowance</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ payroll.basicSalary }}</td>
+                        <td>{{ payroll.dearnessAllowance }}</td>
+                        <td>{{ payroll.conveyanceAllowance }}</td>
+                        <td>{{ payroll.houseRentAllowance }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Professional Tax</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ payroll.professionalTax }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td rowspan="2" class="align-middle total-salary">
+                  <h4><i class="fas fa-rupee-sign"></i> {{ payroll.totalSalary }}</h4>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
